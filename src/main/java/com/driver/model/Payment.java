@@ -12,7 +12,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Boolean isPaymentCompleted;
+    private Boolean paymentCompleted;
 
     private PaymentMode paymentMode;
 
@@ -28,12 +28,15 @@ public class Payment {
         this.id = id;
     }
 
+    public Boolean isPaymentCompleted() {
+        return paymentCompleted;
+    }
     public Boolean getPaymentCompleted() {
-        return isPaymentCompleted;
+        return paymentCompleted;
     }
 
     public void setPaymentCompleted(Boolean paymentCompleted) {
-        isPaymentCompleted = paymentCompleted;
+        this.paymentCompleted = paymentCompleted;
     }
 
     public PaymentMode getPaymentMode() {
