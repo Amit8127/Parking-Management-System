@@ -3,6 +3,7 @@ package com.driver.services.impl;
 import com.driver.model.Payment;
 import com.driver.model.PaymentMode;
 import com.driver.model.Reservation;
+import com.driver.model.Spot;
 import com.driver.repository.PaymentRepository;
 import com.driver.repository.ReservationRepository;
 import com.driver.services.PaymentService;
@@ -23,6 +24,7 @@ public class PaymentServiceImpl implements PaymentService {
     //If the mode contains a string other than "cash", "card", or "upi" (any character in uppercase or lowercase), throw "Payment mode not detected" exception.
     //Note that the reservationId always exists
         Reservation reservation = reservationRepository2.findById(reservationId).get();
+        Spot spot = reservation.getSpot();
         int time = reservation.getNumberOfHours();
         int charge = reservation.getSpot().getPricePerHour();
         int bill = time * charge;
@@ -41,7 +43,9 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         payment.setPaymentCompleted(Boolean.TRUE);
-
-        return new Payment();
+        payment.setReservation(reservation);
+        reservation.setPayment(payment);
+        reservationRepository2.save(reservation);
+        return payment;
     }
 }

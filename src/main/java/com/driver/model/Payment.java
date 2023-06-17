@@ -14,6 +14,7 @@ public class Payment {
 
     private Boolean paymentCompleted;
 
+    @Enumerated(value = EnumType.STRING)
     private PaymentMode paymentMode;
 
     @OneToOne

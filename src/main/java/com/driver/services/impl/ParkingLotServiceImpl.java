@@ -39,6 +39,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
 
         ParkingLot parkingLot = parkingLotRepository1.findById(parkingLotId).get();
         spot.setParkingLot(parkingLot); // setting parkingLot in child table
+        spot.setOccupied(false);
 
         parkingLot.getSpotList().add(spot); // adding spot in parent table parkingLots list
         parkingLotRepository1.save(parkingLot);
@@ -61,11 +62,17 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         Spot spot = null;
         for(Spot currSpot : parkingLot.getSpotList()) {
             if(currSpot.getId() == spotId) {
-                currSpot.setPricePerHour(pricePerHour);
                 spot = currSpot;
                 break;
             }
         }
+
+        if(spot != null) {
+            spot.setParkingLot(parkingLot);
+            spot.setPricePerHour(pricePerHour);
+        }
+        parkingLot.setSpotList(parkingLot.getSpotList());
+
         parkingLotRepository1.save(parkingLot);
 
         return spot;

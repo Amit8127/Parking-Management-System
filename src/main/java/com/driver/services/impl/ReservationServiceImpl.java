@@ -35,10 +35,10 @@ public class ReservationServiceImpl implements ReservationService {
         }
         ParkingLot parkingLot = parkingLotOpt.get();
         User user = userOpt.get();
+        Reservation reservation = new Reservation();
 
         Spot spot1 = null;
         int minCost = Integer.MAX_VALUE;
-        Reservation reservation = new Reservation();
         boolean booked = false;
         for(Spot spot : parkingLot.getSpotList()) {
             int maxWheels = 0;
@@ -49,18 +49,25 @@ public class ReservationServiceImpl implements ReservationService {
             } else {
                 maxWheels = numberOfWheels;
             }
-            if(spot.getPricePerHour() * timeInHours < minCost && numberOfWheels <= maxWheels){
-                booked = true;
+            if(spot.getPricePerHour() * timeInHours < minCost && numberOfWheels <= maxWheels && !spot.getOccupied()){
                 minCost = spot.getPricePerHour() * timeInHours;
                 spot1 = spot;
             }
         }
+        if(spot1 == null) {
+            throw new Exception("Cannot make reservation");
+        }
+        spot1.setOccupied(Boolean.TRUE);
         reservation.setSpot(spot1);
+        reservation.setUser(user);
         reservation.setNumberOfHours(timeInHours);
+
         spot1.getReservationList().add(reservation);
         user.getReservationList().add(reservation);
 
-        // Code is Not complete yet
-        return new Reservation();
+        userRepository3.save(user);
+        spotRepository3.save(spot1);
+
+        return reservation;
     }
 }
