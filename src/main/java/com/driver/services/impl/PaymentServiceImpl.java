@@ -42,6 +42,6 @@ public class PaymentServiceImpl implements PaymentService {
 
         payment.setPaymentCompleted(Boolean.TRUE);
 
-
+        return new Payment();
     }
 }
