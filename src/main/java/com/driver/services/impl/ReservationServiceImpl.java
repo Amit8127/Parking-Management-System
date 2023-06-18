@@ -35,33 +35,18 @@ public class ReservationServiceImpl implements ReservationService {
 
             Spot spot1 = null;
             int minCost = Integer.MAX_VALUE;
-//        for(Spot spot : parkingLot.getSpotList()) {
-//            int maxWheels = 0;
-//            if(spot.getSpotType().equals(SpotType.TWO_WHEELER)) {
-//                maxWheels = 2;
-//            } else if (spot.getSpotType().equals(SpotType.FOUR_WHEELER)) {
-//                maxWheels = 4;
-//            } else {
-//                maxWheels = numberOfWheels;
-//            }
-//            if(spot.getPricePerHour() * timeInHours < minCost && numberOfWheels <= maxWheels && !spot.getOccupied()){
-//                minCost = spot.getPricePerHour() * timeInHours;
-//                spot1 = spot;
-//            }
-//        }
 
             for (Spot spot : parkingLot.getSpotList()) {
-                if (!spot.getOccupied() && numberOfWheels > 4 && spot.getSpotType() == SpotType.OTHERS) {
+                if (!spot.getOccupied() && numberOfWheels <= 2 && spot.getSpotType() == SpotType.TWO_WHEELER) {
                     if (minCost >= spot.getPricePerHour()) {
                         minCost = spot.getPricePerHour();
                         spot1 = spot;
                     }
-                } else if (!spot.getOccupied() && (numberOfWheels > 2 && numberOfWheels <= 4) && spot.getSpotType() == SpotType.FOUR_WHEELER) {
+                } else if (!spot.getOccupied() && numberOfWheels <= 4 && spot.getSpotType() == SpotType.FOUR_WHEELER) {
                     if (minCost >= spot.getPricePerHour()) {
                         minCost = spot.getPricePerHour();
                         spot1 = spot;
                     }
-
                 } else {
                     if (!spot.getOccupied() && minCost >= spot.getPricePerHour()) {
                         minCost = spot.getPricePerHour();

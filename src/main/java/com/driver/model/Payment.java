@@ -17,8 +17,7 @@ public class Payment {
     @Enumerated(value = EnumType.STRING)
     private PaymentMode paymentMode;
 
-    @OneToOne
-    @JoinColumn
+    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
     private Reservation reservation;
 
     public Integer getId() {
